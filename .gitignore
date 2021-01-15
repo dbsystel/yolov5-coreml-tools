@@ -1,0 +1,15 @@
+# VS Code
+.vscode
+
+# Poetry
+__pycache__
+.DS_Store
+dist
+
+# Model
+*.mlmodelc
+models
+output
+
+# Data 
+data
