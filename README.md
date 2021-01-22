@@ -4,11 +4,18 @@ The scripts in this repo can be used to export a YOLOv5 model to coreml and benc
 
 ## Dependencies
 
-* python 3.8
+* python 3.8.x
 * poetry
 
 Other dependencies are installed by poetry automatically with:
 ```console 
+$ poetry install
+```
+
+It's recommended to use the version as specified. CoreML Tools only works with certain PyTorch Versions, which are only available for certain Python versions. You might want to consider using pyenv:
+```
+$ pyenv install 3.8.6
+$ pyenv global 3.8.6
 $ poetry install
 ```
 
@@ -26,7 +33,7 @@ Experience has shown that one needs to be very careful with the versions of liba
 
 ### Usage 
 
-First, some values in the script should be changed according to your needs. In `src/coreml_export/main.py` you'll find some global variabled, which are specific to the concrete model you use: 
+First, some values in the script should be changed according to your needs. In `src/coreml_export/main.py` you'll find some global variables, which are specific to the concrete model you use: 
 
 * `classLabels` -> This is the list of labels your model recognized, all pretrained models of YOLOv5 used the [coco dataset](https://cocodataset.org/#home) and therefore regonize 80 Labels
 * `anchors` -> These depend on the model version you use (s, m, l, x) and you will find these in the according `yolo<Version>.yml` file in the `yolov5` repository (Use the files from the correct yolov5 version!). 
@@ -58,5 +65,42 @@ In  `src/coreml_export/snippets.py` you might find a few helpful snippets to tem
 
 This makes heavy use of the library [Object Detection Metrics Library](https://github.com/rafaelpadilla/Object-Detection-Metrics) developed by @rafaelpadilla. 
 
-The Metrics script in  `src/coreml_metrics/main.py` can be used to benchmark a CoreML Model. 
+The Metrics script in  `src/coreml_metrics/main.py` can be used to benchmark a CoreML Model. It would calculate a precision x recall curve for every label and every folder of images. 
+See [here for a detailed explanation](https://github.com/rafaelpadilla/Object-Detection-Metrics#important-definitions).
 
+### Usage 
+
+First, you need some images with ground truth data to benchmark the model. The images can be in a nested folder structure to allow benchmarking categories of images. It's just important that you exactly mirror the folder structure with your ground truth data. Example structure: 
+```
+- data 
+    - images
+        - sharp_images
+            - black_white_images
+                - image1.jpg 
+                - image2.jpg
+            - colored_images 
+                - image3.jpg 
+        - unsharp_images 
+            - image4.jpg 
+            - image5.jpg 
+    - labels 
+        - sharp_images
+            - black_white_images
+                - image1.txt
+                - image2.txt
+            - colored_images 
+                - image3.txt 
+        - unsharp_images 
+            - image4.txt 
+            - image5.txt 
+```
+The script will then output detections for every image and one graph for each tag for each folder. So there will be one graph for all black_white_images, one for all colored_images, one for all sharp images ... 
+
+Furthermore, some values in the script should be changed according to your needs. In `src/coreml_metrics/main.py` you'll find some global variables, which are specific to the concrete model you use: 
+
+* `classLabels` -> This is the list of labels your model recognized, all pretrained models of YOLOv5 used the [coco dataset](https://cocodataset.org/#home) and therefore regonize 80 Labels
+
+To run the script use the command: 
+```console 
+$ poetry run coreml-metrics
+```

@@ -7,8 +7,8 @@ IMAGE_FOLDER = "data/images"
 
 def main():
     model = ct.models.MLModel("output/models/yolov5-iOS.mlmodel")
-    model_16 = ct.models.MLModel("output/models/yolov5-iOS.mlmodel")
-    model_8 = ct.models.MLModel("output/models/yolov5-iOS.mlmodel")
+    # model_16 = ct.models.MLModel("output/models/yolov5-iOS.mlmodel")
+    # model_8 = ct.models.MLModel("output/models/yolov5-iOS.mlmodel")
 
     in_dicts = []
     imagePaths = []
@@ -28,5 +28,5 @@ def main():
 
 
     # Compare models 
-    ct.models.neural_network.quantization_utils.compare_models(model, model_16, in_dicts)
-    ct.models.neural_network.quantization_utils.compare_models(model, model_8, in_dicts)
+    # ct.models.neural_network.quantization_utils.compare_models(model, model_16, in_dicts)
+    # ct.models.neural_network.quantization_utils.compare_models(model, model_8, in_dicts)

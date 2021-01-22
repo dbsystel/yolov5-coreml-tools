@@ -3,7 +3,7 @@ import coremltools as ct
 from argparse import ArgumentParser
 from pathlib import Path
 
-classLabels = ['label1', 'label2', 'label3'] # The labels of your model, pretrained YOLOv5 models usually use the coco dataset and have 80 classes
+classLabels = ['label1', 'label2', 'label3', 'label4', 'label5'] # The labels of your model, pretrained YOLOv5 models usually use the coco dataset and have 80 classes
 numberOfClassLabels = len(classLabels)
 outputSize = numberOfClassLabels + 5
 
@@ -205,7 +205,7 @@ def main():
 
     parser = ArgumentParser()
     parser.add_argument('--model-input-path', type=str, dest="model_input_path", default='models/model.pt', help='path to yolov5 model')
-    parser.add_argument('--model-output-path', type=str, dest="model_output_path", default='output/models', help='model output path')
+    parser.add_argument('--model-output-directory', type=str, dest="model_output_directory", default='output/models', help='model output path')
     parser.add_argument('--model-output-name', type=str, dest="model_output_name", default='yolov5-iOS', help='model output name')
     parser.add_argument('--quantize-model', action="store_true",  dest="quantize", help='Pass flag quantized models are needed (Only works on mac Os)')
     opt = parser.parse_args()
@@ -214,7 +214,7 @@ def main():
         print("Error: Input model not found")
         return
 
-    Path(opt.model_output_path).mkdir(parents=True, exist_ok=True)
+    Path(opt.model_output_directory).mkdir(parents=True, exist_ok=True)
 
 
     sampleInput = torch.zeros((1, 3, 640, 640))
@@ -227,7 +227,7 @@ def main():
     # Dry run, necessary for correct tracing!
     model(sampleInput)
 
-    ts = exportTorchscript(model, sampleInput, checkInputs, f"{opt.model_output_path}/{opt.model_output_name}.torchscript.pt")
+    ts = exportTorchscript(model, sampleInput, checkInputs, f"{opt.model_output_directory}/{opt.model_output_name}.torchscript.pt")
 
     # Convert pytorch to raw coreml model
     modelSpec = convertToCoremlSpec(ts, sampleInput)
@@ -241,7 +241,7 @@ def main():
     nmsSpec = createNmsModelSpec(builder.spec)
 
     # Combine model with export logic and nms logic
-    combineModelsAndExport(builder.spec, nmsSpec, f"{opt.model_output_path}/{opt.model_output_name}.mlmodel", opt.quantize)
+    combineModelsAndExport(builder.spec, nmsSpec, f"{opt.model_output_directory}/{opt.model_output_name}.mlmodel", opt.quantize)
 
 if __name__ == '__main__':
     main()
