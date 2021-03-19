@@ -17,7 +17,7 @@ name = "coreml-tools"
 version = "0.2.1"
 description = "Different scripts to use YOLOv5 with coreml"
 authors = ["Leon De Andrade"]
-license = "Proprietary"
+license = "Apache 2.0"
 readme = "README.md"
 packages = [
     { include = "coreml_export", from = "src"}

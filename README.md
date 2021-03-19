@@ -27,9 +27,16 @@ We use the unified conversion api of [coremltools 4.0](https://coremltools.readm
 
 For optimal integration in Swift you need at least `iOS 13` as the export layer with NMS is otherwise not supported. It is possible though to use `iOS 12` if you implement NMS manually in Swift.
 
-The models always need the original source code, unless you do have a torchscript model and therefore skip the tracing step in the script. Currently we use our own fork of YOLOv5 with some modifications regarding Neural Engine Optimizations. The fork is using YOLOv5 Version 2.0, so you will need a model trained with Version 2.0. 
-
 Experience has shown that one needs to be very careful with the versions of libaries used. In particular the PyTorch version. It's recommended to not change the version of the libaries used. If you need for some reasons a newer PyTorch version, check the [github page of coremltools](https://github.com/apple/coremltools/issues) for open issues regarding the PyTorch version you want to use, in the past most recents versions where not compatible.
+
+#### YOLOv5 Version 
+The models always need the original source code, unless you do have a torchscript model and therefore skip the tracing step in the script. At the time writing, we use YOLOv5 version 2.0 and have only tested it with this version.
+
+**Note**: You can clone yolov5 and add a setup.py file with all dependencies of yolov5, this allows you to include yolov5 in poetry. 
+
+**Note**: It has a huge impact on performance if the model runs on the NeuralEngine or the CPU / GPU (or switches between them) on your device. Unfortunately, there is no documentation which model layers can run on the neural engine and which not ([some infos here](https://github.com/hollance/neural-engine)). With yolov5 version2 we found out that SPP Layers with kernel sizes bigger 7 are not supported, so you might want to change the model configration, so it uses smaller kernel sizes before you train it. The smallest YOLOv5s should be around 20ms / detection if optimized. 
+Please open an issue if you have problems with other layers (for instance in newer YOLOv5 versions)!
+
 
 ### Usage 
 
@@ -64,7 +71,7 @@ In  `src/coreml_export/snippets.py` you might find a few helpful snippets to tem
 ## CoreML Metrics 
 
 This makes heavy use of the library [Object Detection Metrics Library](https://github.com/rafaelpadilla/Object-Detection-Metrics) developed by @rafaelpadilla under the MIT License. 
-The library is included in the `objectionDetectionMetrics` subfolder with some small adjustments. The license is included in `objectionDetectionMetrics/LICENSE`.
+The library is included in the `objectionDetectionMetrics` subfolder with some small adjustments.
 
 The Metrics script in  `src/coreml_metrics/main.py` can be used to benchmark a CoreML Model. It would calculate a precision x recall curve for every label and every folder of images. 
 See [here for a detailed explanation](https://github.com/rafaelpadilla/Object-Detection-Metrics#important-definitions).
