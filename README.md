@@ -63,7 +63,8 @@ In  `src/coreml_export/snippets.py` you might find a few helpful snippets to tem
 
 ## CoreML Metrics 
 
-This makes heavy use of the library [Object Detection Metrics Library](https://github.com/rafaelpadilla/Object-Detection-Metrics) developed by @rafaelpadilla. 
+This makes heavy use of the library [Object Detection Metrics Library](https://github.com/rafaelpadilla/Object-Detection-Metrics) developed by @rafaelpadilla under the MIT License. 
+The library is included in the `objectionDetectionMetrics` subfolder with some small adjustments. The license is included in `objectionDetectionMetrics/LICENSE`.
 
 The Metrics script in  `src/coreml_metrics/main.py` can be used to benchmark a CoreML Model. It would calculate a precision x recall curve for every label and every folder of images. 
 See [here for a detailed explanation](https://github.com/rafaelpadilla/Object-Detection-Metrics#important-definitions).
