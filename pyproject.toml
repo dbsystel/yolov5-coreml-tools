@@ -29,8 +29,7 @@ python = ">=3.7, <3.9"
 
 # coreml export 
 coremltools = "^4.0"
-# yolov5 = { path = "../yolov5", develop = false }
-yolov5 = { git = "", branch = "ios-yolov5-v2" } 
+yolov5 = { path = "../yolov5", develop = true }
 
 # Workaround for Windows
 torch = [

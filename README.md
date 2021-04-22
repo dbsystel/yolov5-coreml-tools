@@ -11,6 +11,7 @@ Other dependencies are installed by poetry automatically with:
 ```console 
 $ poetry install
 ```
+**Note**: It assumes that you've cloned the yolov5 repo to `../yolov5` relative to the project and that you have added a `setup.py` file, so poetry installs the dependencies of YOLOv5. See [Issue #2525](https://github.com/ultralytics/yolov5/issues/2525#issuecomment-821525523).
 
 It's recommended to use the version as specified. CoreML Tools only works with certain PyTorch Versions, which are only available for certain Python versions. You might want to consider using pyenv:
 ```
@@ -32,9 +33,10 @@ Experience has shown that one needs to be very careful with the versions of liba
 #### YOLOv5 Version 
 The models always need the original source code, unless you do have a torchscript model and therefore skip the tracing step in the script. At the time writing, we use YOLOv5 version 2.0 and have only tested it with this version.
 
-**Note**: You can clone yolov5 and add a setup.py file with all dependencies of yolov5, this allows you to include yolov5 in poetry. 
+**Note**: It has a huge impact on performance if the model runs on the NeuralEngine or the CPU / GPU (or switches between them) on your device. Unfortunately, there is no documentation which model layers can run on the neural engine and which not ([some infos here](https://github.com/hollance/neural-engine)). With yolov5 version 2, 3 and 4 there were problems with the SPP Layers with kernel sizes bigger than 7, so we replaced them and retrained the model. On a recent device YOLOv5s should be around 20ms / detection. 
+See [Issue 2526](https://github.com/ultralytics/yolov5/issues/2526#issuecomment-823059344)
 
-**Note**: It has a huge impact on performance if the model runs on the NeuralEngine or the CPU / GPU (or switches between them) on your device. Unfortunately, there is no documentation which model layers can run on the neural engine and which not ([some infos here](https://github.com/hollance/neural-engine)). With yolov5 version2 we found out that SPP Layers with kernel sizes bigger 7 are not supported, so you might want to change the model configration, so it uses smaller kernel sizes before you train it. The smallest YOLOv5s should be around 20ms / detection if optimized. 
+With yolov5 version2 we found out that SPP Layers with kernel sizes bigger 7 are not supported, so you might want to change the model configration, so it uses smaller kernel sizes before you train it. The smallest YOLOv5s should be around 20ms / detection if optimized. 
 Please open an issue if you have problems with other layers (for instance in newer YOLOv5 versions)!
 
 
