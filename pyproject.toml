@@ -28,16 +28,16 @@ packages = [
 python = ">=3.7, <3.9"
 
 # coreml export 
-coremltools = "^4.0"
+coremltools = "^4.1"
 yolov5 = { path = "../yolov5", develop = true }
 
 # Workaround for Windows
 torch = [
-    {version = "=1.6.0", markers="sys_platform != 'win32'"},
+    {version = "=1.7.0", markers="sys_platform != 'win32'"},
     # {url = "https://download.pytorch.org/whl/cu102/torch-1.6.0-cp38-cp38-win_amd64.whl", python = "~3.8", markers = "sys_platform == 'win32'"}
 ]
 torchvision = [
-    {version = "=0.7.0",  markers = "sys_platform != 'win32'"},
+    {version = "=0.8.0",  markers = "sys_platform != 'win32'"},
     # {url = "https://download.pytorch.org/whl/cu102/torchvision-0.7.0-cp38-cp38-win_amd64.whl", python = "~3.8", markers = "sys_platform == 'win32'"}
 ]
 

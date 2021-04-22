@@ -17,6 +17,19 @@ import coremltools as ct
 from argparse import ArgumentParser
 from pathlib import Path
 
+# Add silu function for yolov5s v4 model: https://github.com/apple/coremltools/issues/1099
+from coremltools.converters.mil import Builder as mb
+from coremltools.converters.mil import register_torch_op
+from coremltools.converters.mil.frontend.torch.ops import _get_inputs
+
+@register_torch_op
+def silu(context, node):
+    inputs = _get_inputs(context, node, expected=1)
+    x = inputs[0]
+    y = mb.sigmoid(x=x)
+    z = mb.mul(x=x, y=y, name=node.name)
+    context.add(z)
+
 # The labels of your model, pretrained YOLOv5 models usually use the coco dataset and have 80 classes
 classLabels = [f"label{i}" for i in range(80)]
 numberOfClassLabels = len(classLabels)
@@ -277,7 +290,7 @@ def main():
 
     parser = ArgumentParser()
     parser.add_argument('--model-input-path', type=str, dest="model_input_path",
-                        default='models/model.pt', help='path to yolov5 model')
+                        default='models/yolov5s_v4.pt', help='path to yolov5 model')
     parser.add_argument('--model-output-directory', type=str,
                         dest="model_output_directory", default='output/models', help='model output path')
     parser.add_argument('--model-output-name', type=str, dest="model_output_name",

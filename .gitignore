@@ -19,11 +19,13 @@
 __pycache__
 .DS_Store
 dist
+poetry.toml
 
 # Model
 *.mlmodelc
 models
 output
+.venv 
 
 # Data 
 data
