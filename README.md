@@ -31,14 +31,10 @@ For optimal integration in Swift you need at least `iOS 13` as the export layer 
 Experience has shown that one needs to be very careful with the versions of libaries used. In particular the PyTorch version. It's recommended to not change the version of the libaries used. If you need for some reasons a newer PyTorch version, check the [github page of coremltools](https://github.com/apple/coremltools/issues) for open issues regarding the PyTorch version you want to use, in the past most recents versions where not compatible.
 
 #### YOLOv5 Version 
-The models always need the original source code, unless you do have a torchscript model and therefore skip the tracing step in the script. At the time writing, we use YOLOv5 version 2.0 and have only tested it with this version.
+The models always need the original source code, unless you do have a torchscript model and therefore skip the tracing step in the script. 
 
 **Note**: It has a huge impact on performance if the model runs on the NeuralEngine or the CPU / GPU (or switches between them) on your device. Unfortunately, there is no documentation which model layers can run on the neural engine and which not ([some infos here](https://github.com/hollance/neural-engine)). With yolov5 version 2, 3 and 4 there were problems with the SPP Layers with kernel sizes bigger than 7, so we replaced them and retrained the model. On a recent device YOLOv5s should be around 20ms / detection. 
 See [Issue 2526](https://github.com/ultralytics/yolov5/issues/2526#issuecomment-823059344)
-
-With yolov5 version2 we found out that SPP Layers with kernel sizes bigger 7 are not supported, so you might want to change the model configration, so it uses smaller kernel sizes before you train it. The smallest YOLOv5s should be around 20ms / detection if optimized. 
-Please open an issue if you have problems with other layers (for instance in newer YOLOv5 versions)!
-
 
 ### Usage 
 
